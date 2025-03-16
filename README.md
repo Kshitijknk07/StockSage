@@ -84,20 +84,6 @@ The application uses the following key configurations:
    http://localhost:8080/StockSage
    ```
 
-## 📝 API Documentation
-
-StockSage provides RESTful endpoints for:
-
-- Product Management
-- Inventory Operations
-- Stock Level Queries
-- Analytics and Reporting
-
-Detailed API documentation will be available at:
-```
-http://localhost:8080/StockSage/api-docs
-```
-
 ## 🔒 Security
 
 - Input validation
