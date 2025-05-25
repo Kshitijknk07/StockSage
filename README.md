@@ -1,106 +1,132 @@
 # StockSage
 
-A robust and scalable Inventory Management System built with Spring MVC, Hibernate, and MySQL. StockSage provides a comprehensive solution for managing inventory, tracking stock levels, and handling product information with an intelligent and user-friendly interface.
+StockSage is a robust, scalable Inventory Management System built with Spring MVC, Hibernate, and MySQL. It provides a comprehensive solution for managing inventory, tracking stock levels, handling product and category information, and includes a modern RESTful API for integration.
+
+---
 
 ## 🚀 Features
 
-- Intelligent Stock Management
+- Product & Category Management (CRUD)
 - Real-time Inventory Tracking
-- Smart Product Analytics
+- Product Search by Name or Category
+- Stock Level Alerts
+- Inventory Reports (API)
 - RESTful API Endpoints
 - Secure Database Operations
-- Modern Web Interface
-- Stock Level Alerts
-- Inventory Reports
+- Modern Web Interface (HTML/CSS/JS)
+- Logging & Audit Trail
+
+---
 
 ## 🛠️ Technology Stack
 
-- **Backend Framework:** Spring MVC 5.3.27
-- **ORM Framework:** Hibernate 5.6.15
-- **Database:** MySQL 8.0
+- **Backend:** Spring MVC 5.3.x
+- **ORM:** Hibernate 5.6.x
+- **Database:** MySQL 8.0+
 - **Build Tool:** Maven
-- **Java Version:** 1.8
-- **Additional Libraries:**
+- **Java Version:** 1.8+
+- **Other Libraries:**
   - Spring Data JPA
-  - Jackson (JSON Processing)
+  - Jackson (JSON)
   - Lombok
-  - Logback (Logging)
+  - Logback
+
+---
 
 ## 📋 Prerequisites
 
 - JDK 1.8 or higher
 - Maven 3.x
-- MySQL 8.0
-- Servlet Container (e.g., Tomcat 9.x)
+- MySQL 8.0+
+- Servlet Container (Tomcat 9.x recommended)
 
-## 🔧 Installation
+---
 
-1. Clone the repository:
+## 🔧 Installation & Setup
+
+1. **Clone the repository:**
    ```bash
-   git clone [repository-url]
+   git clone <your-repo-url>
+   cd StockSage/project
    ```
-
-2. Configure the database:
-   - Create a MySQL database
-   - Update the database configuration in `src/main/resources/application.properties`
-
-3. Build the project:
+2. **Configure the database:**
+   - Create a MySQL database (e.g., `stocksage`)
+   - Update `src/main/resources/application.properties` with your DB credentials
+3. **Build the project:**
    ```bash
    mvn clean install
    ```
+4. **Deploy:**
+   - Deploy the generated `inventory-management.war` from `target/` to your Tomcat `webapps/` directory
+5. **Access the app:**
+   - Open [http://localhost:8080/inventory-management/](http://localhost:8080/inventory-management/) in your browser
 
-4. Deploy the WAR file to your servlet container
+---
 
 ## 📁 Project Structure
 
 ```
 src/main/
-├── java/
-│   └── com/
-│       └── inventory/
-│           ├── config/         # Spring configuration classes
-│           ├── controller/     # REST controllers
-│           ├── model/          # Entity classes
-│           ├── repository/     # Data access layer
-│           └── service/        # Business logic layer
-└── webapp/                    # Web resources
+├── java/com/inventory/
+│   ├── config/         # Spring config
+│   ├── controller/    # REST controllers
+│   ├── model/         # JPA entities
+│   ├── repository/    # Spring Data JPA repos
+│   └── service/       # Business logic
+└── webapp/            # Web resources (HTML, JSP, etc.)
 ```
+
+---
 
 ## 🔑 Configuration
 
-The application uses the following key configurations:
+- **Spring MVC** for web/API layer
+- **Hibernate** for ORM
+- **MySQL** for database
+- **Logback** for logging
 
-- Spring MVC for web layer
-- Hibernate for ORM
-- MySQL for database
-- Logback for logging
+---
 
 ## 🚀 Usage
 
-1. Start your MySQL server
-2. Deploy the application to your servlet container
-3. Access StockSage through your web browser:
-   ```
-   http://localhost:8080/StockSage
-   ```
+1. Start MySQL and ensure your DB is ready
+2. Deploy the WAR to Tomcat and start the server
+3. Use a browser or API client (e.g., Postman) to interact with endpoints:
+   - Products: `/api/products`
+   - Categories: `/api/categories`
+   - Product Search: `/api/products/search?keyword=...`
+   - Product Search by Category: `/api/products/searchByCategory?category=...`
+
+---
 
 ## 🔒 Security
 
 - Input validation
-- SQL injection prevention
-- XSS protection
-- CSRF protection
-- Role-based access control
-- Secure authentication
+- SQL injection prevention (via JPA)
+- XSS protection (for web UI)
+- CSRF protection (if using forms)
+- Role-based access (extendable)
+
+---
 
 ## 📊 Logging
 
-The application uses Logback for logging with the following features:
-
-- Console logging
-- File logging
+- Logback for console & file logging
 - Log rotation
-- Different log levels for different environments
 - Audit logging for inventory changes
 
-MORE TO COME.... 
+---
+
+## 🤝 Contributing
+
+Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+**StockSage – Inventory made simple.**
