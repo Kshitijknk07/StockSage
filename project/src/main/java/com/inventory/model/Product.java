@@ -33,6 +33,10 @@ public class Product {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
@@ -43,4 +47,4 @@ public class Product {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
-} 
+}

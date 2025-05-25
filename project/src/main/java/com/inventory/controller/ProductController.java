@@ -52,4 +52,9 @@ public class ProductController {
     public ResponseEntity<List<Product>> getLowStockProducts(@RequestParam(defaultValue = "10") int threshold) {
         return ResponseEntity.ok(productService.getLowStockProducts(threshold));
     }
-} 
+
+    @GetMapping("/searchByCategory")
+    public ResponseEntity<List<Product>> searchProductsByCategory(@RequestParam String category) {
+        return ResponseEntity.ok(productService.searchProductsByCategory(category));
+    }
+}

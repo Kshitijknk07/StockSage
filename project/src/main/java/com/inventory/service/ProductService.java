@@ -51,7 +51,11 @@ public class ProductService {
         return productRepository.search(keyword);
     }
 
+    public List<Product> searchProductsByCategory(String categoryName) {
+        return productRepository.findByCategory_NameContainingIgnoreCase(categoryName);
+    }
+
     public List<Product> getLowStockProducts(int threshold) {
         return productRepository.findByQuantityLessThan(threshold);
     }
-} 
+}
