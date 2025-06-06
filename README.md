@@ -1,132 +1,134 @@
 # StockSage
 
-StockSage is a robust, scalable Inventory Management System built with Spring MVC, Hibernate, and MySQL. It provides a comprehensive solution for managing inventory, tracking stock levels, handling product and category information, and includes a modern RESTful API for integration.
-
----
+StockSage is a comprehensive Inventory Management System built with Spring MVC, Hibernate, and MySQL. The system provides a complete solution for managing inventory, tracking stock levels, and handling product and category information through a modern RESTful API.
 
 ## 🚀 Features
 
-- Product & Category Management (CRUD)
-- Real-time Inventory Tracking
-- Product Search by Name or Category
-- Stock Level Alerts
-- Inventory Reports (API)
-- RESTful API Endpoints
-- Secure Database Operations
-- Modern Web Interface (HTML/CSS/JS)
-- Logging & Audit Trail
+- **Product Management**
 
----
+  - Complete CRUD operations
+  - SKU-based tracking
+  - Price and quantity management
+  - Category association
+  - Stock level monitoring
+
+- **Category Management**
+
+  - Hierarchical organization
+  - Product grouping
+  - Category-based reporting
+  - Empty category detection
+
+- **Inventory Control**
+
+  - Real-time stock tracking
+  - Low stock alerts
+  - Stock level history
+  - Inventory reports
+
+- **Search & Filtering**
+  - Product search by name/SKU
+  - Category-based filtering
+  - Advanced search capabilities
+  - Pagination support
 
 ## 🛠️ Technology Stack
 
-- **Backend:** Spring MVC 5.3.x
+- **Backend Framework:** Spring MVC 5.3.x
 - **ORM:** Hibernate 5.6.x
 - **Database:** MySQL 8.0+
 - **Build Tool:** Maven
 - **Java Version:** 1.8+
-- **Other Libraries:**
+- **Key Libraries:**
   - Spring Data JPA
   - Jackson (JSON)
   - Lombok
   - Logback
-
----
 
 ## 📋 Prerequisites
 
 - JDK 1.8 or higher
 - Maven 3.x
 - MySQL 8.0+
-- Servlet Container (Tomcat 9.x recommended)
+- Tomcat 9.x
 
----
+## 🔧 Setup & Installation
 
-## 🔧 Installation & Setup
+1. **Database Setup:**
 
-1. **Clone the repository:**
    ```bash
-   git clone <your-repo-url>
-   cd StockSage/project
+   # Create MySQL database
+   CREATE DATABASE stocksage;
    ```
-2. **Configure the database:**
-   - Create a MySQL database (e.g., `stocksage`)
-   - Update `src/main/resources/application.properties` with your DB credentials
-3. **Build the project:**
+
+2. **Configuration:**
+
+   - Update `src/main/resources/application.properties` with your database credentials
+   - Configure logging in `logback.xml` if needed
+
+3. **Build & Deploy:**
+
    ```bash
+   # Build the project
    mvn clean install
-   ```
-4. **Deploy:**
-   - Deploy the generated `inventory-management.war` from `target/` to your Tomcat `webapps/` directory
-5. **Access the app:**
-   - Open [http://localhost:8080/inventory-management/](http://localhost:8080/inventory-management/) in your browser
 
----
+   # Deploy to Tomcat
+   # Copy target/inventory-management.war to Tomcat's webapps directory
+   ```
+
+4. **Access:**
+   - Web Interface: http://localhost:8080/inventory-management/
+   - API Base URL: http://localhost:8080/inventory-management/api/
 
 ## 📁 Project Structure
 
 ```
 src/main/
 ├── java/com/inventory/
-│   ├── config/         # Spring config
-│   ├── controller/    # REST controllers
+│   ├── config/         # Spring configuration
+│   ├── controller/     # REST controllers
 │   ├── model/         # JPA entities
-│   ├── repository/    # Spring Data JPA repos
+│   ├── repository/    # Data repositories
 │   └── service/       # Business logic
-└── webapp/            # Web resources (HTML, JSP, etc.)
+└── webapp/            # Web resources
 ```
 
----
+## 🔑 API Endpoints
 
-## 🔑 Configuration
+### Products
 
-- **Spring MVC** for web/API layer
-- **Hibernate** for ORM
-- **MySQL** for database
-- **Logback** for logging
+- `GET /api/products` - List all products
+- `POST /api/products` - Create new product
+- `GET /api/products/{id}` - Get product details
+- `PUT /api/products/{id}` - Update product
+- `DELETE /api/products/{id}` - Delete product
+- `GET /api/products/search` - Search products
+- `GET /api/products/low-stock` - Get low stock products
 
----
+### Categories
 
-## 🚀 Usage
+- `GET /api/categories` - List all categories
+- `POST /api/categories` - Create new category
+- `GET /api/categories/{id}` - Get category details
+- `PUT /api/categories/{id}` - Update category
+- `DELETE /api/categories/{id}` - Delete category
+- `GET /api/categories/empty` - List empty categories
 
-1. Start MySQL and ensure your DB is ready
-2. Deploy the WAR to Tomcat and start the server
-3. Use a browser or API client (e.g., Postman) to interact with endpoints:
-   - Products: `/api/products`
-   - Categories: `/api/categories`
-   - Product Search: `/api/products/search?keyword=...`
-   - Product Search by Category: `/api/products/searchByCategory?category=...`
+## 📊 Logging & Monitoring
 
----
+- Comprehensive logging with Logback
+- Audit trail for inventory changes
+- Performance monitoring
+- Error tracking and reporting
 
-## 🔒 Security
+## 🔒 Security Features
 
-- Input validation
-- SQL injection prevention (via JPA)
-- XSS protection (for web UI)
-- CSRF protection (if using forms)
-- Role-based access (extendable)
-
----
-
-## 📊 Logging
-
-- Logback for console & file logging
-- Log rotation
-- Audit logging for inventory changes
+- Input validation and sanitization
+- SQL injection prevention
+- XSS protection
+- CSRF protection
+- Secure database operations
 
 ---
 
-## 🤝 Contributing
-
-Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
----
-
-**StockSage – Inventory made simple.**
+**StockSage – Your Complete Inventory Solution**
