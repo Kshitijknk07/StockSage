@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -48,4 +50,31 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
         @Query("SELECT p FROM Product p WHERE p.category.id IN :categoryIds")
         Page<Product> findByCategoryIds(@Param("categoryIds") List<Long> categoryIds, Pageable pageable);
+
+        // New query methods
+        @Query("SELECT p FROM Product p WHERE p.quantity = 0")
+        List<Product> findOutOfStockProducts();
+
+        @Query("SELECT p FROM Product p WHERE p.quantity > 0 AND p.quantity <= :threshold")
+        List<Product> findLowStockProducts(@Param("threshold") int threshold);
+
+        @Query("SELECT p FROM Product p WHERE p.price > :price")
+        List<Product> findProductsAbovePrice(@Param("price") BigDecimal price);
+
+        @Query("SELECT p FROM Product p WHERE p.price < :price")
+        List<Product> findProductsBelowPrice(@Param("price") BigDecimal price);
+
+        @Query("SELECT p FROM Product p WHERE p.createdAt >= :startDate AND p.createdAt <= :endDate")
+        List<Product> findProductsCreatedBetween(
+                        @Param("startDate") LocalDateTime startDate,
+                        @Param("endDate") LocalDateTime endDate);
+
+        @Query("SELECT p FROM Product p WHERE p.category IS NULL")
+        List<Product> findProductsWithoutCategory();
+
+        @Query("SELECT p FROM Product p WHERE p.quantity > 0 ORDER BY p.quantity ASC")
+        List<Product> findProductsOrderByQuantityAsc();
+
+        @Query("SELECT p FROM Product p WHERE p.quantity > 0 ORDER BY p.quantity DESC")
+        List<Product> findProductsOrderByQuantityDesc();
 }

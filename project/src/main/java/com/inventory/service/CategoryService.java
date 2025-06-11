@@ -8,24 +8,60 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
 public class CategoryService {
     private final CategoryRepository categoryRepository;
+    private static final int MAX_NAME_LENGTH = 100;
+    private static final int MAX_DESCRIPTION_LENGTH = 500;
 
     @Autowired
     public CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
 
-    @Transactional
+    public List<Category> getAllCategories() {
+        return categoryRepository.findAll();
+    }
+
+    public Optional<Category> getCategoryById(Long id) {
+        return categoryRepository.findById(id);
+    }
+
     public Category createCategory(Category category) {
         validateCategory(category);
         if (categoryRepository.existsByName(category.getName())) {
             throw new RuntimeException("Category with name '" + category.getName() + "' already exists");
         }
         return categoryRepository.save(category);
+    }
+
+    public Category updateCategory(Long id, Category categoryDetails) {
+        Category category = categoryRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Category not found"));
+        
+        validateCategory(categoryDetails);
+        if (!category.getName().equals(categoryDetails.getName()) && 
+            categoryRepository.existsByName(categoryDetails.getName())) {
+            throw new RuntimeException("Category with name '" + categoryDetails.getName() + "' already exists");
+        }
+        
+        category.setName(categoryDetails.getName());
+        category.setDescription(categoryDetails.getDescription());
+        
+        return categoryRepository.save(category);
+    }
+
+    public void deleteCategory(Long id) {
+        Category category = categoryRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Category not found"));
+        if (category.getProducts() != null && !category.getProducts().isEmpty()) {
+            throw new RuntimeException("Cannot delete category with associated products");
+        }
+        categoryRepository.delete(category);
     }
 
     @Transactional(readOnly = true)
@@ -45,30 +81,6 @@ public class CategoryService {
     public Category getCategory(Long id) {
         return categoryRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Category not found with id: " + id));
-    }
-
-    @Transactional
-    public Category updateCategory(Long id, Category category) {
-        validateCategory(category);
-        Category existing = getCategory(id);
-        
-        if (!existing.getName().equals(category.getName()) && 
-            categoryRepository.existsByName(category.getName())) {
-            throw new RuntimeException("Category with name '" + category.getName() + "' already exists");
-        }
-        
-        existing.setName(category.getName());
-        existing.setDescription(category.getDescription());
-        return categoryRepository.save(existing);
-    }
-
-    @Transactional
-    public void deleteCategory(Long id) {
-        Category category = getCategory(id);
-        if (category.getProducts() != null && !category.getProducts().isEmpty()) {
-            throw new RuntimeException("Cannot delete category with associated products");
-        }
-        categoryRepository.deleteById(id);
     }
 
     @Transactional(readOnly = true)
@@ -100,6 +112,53 @@ public class CategoryService {
         return categoryRepository.findAllWithProductCount(pageable);
     }
 
+    @Transactional(readOnly = true)
+    public List<Category> getEmptyCategories() {
+        return categoryRepository.findEmptyCategories();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Category> getCategoriesWithLowStock(int threshold) {
+        if (threshold < 0) {
+            throw new IllegalArgumentException("Threshold cannot be negative");
+        }
+        return categoryRepository.findCategoriesWithLowStock(threshold);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Category> getCategoriesWithOutOfStockProducts() {
+        return categoryRepository.findCategoriesWithOutOfStockProducts();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Category> getCategoriesWithInStockProducts() {
+        return categoryRepository.findCategoriesWithInStockProducts();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Category> getCategoriesWithMoreThanProducts(int count) {
+        if (count < 0) {
+            throw new IllegalArgumentException("Product count cannot be negative");
+        }
+        return categoryRepository.findCategoriesWithMoreThanProducts(count);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Category> getCategoriesWithLessThanProducts(int count) {
+        if (count < 0) {
+            throw new IllegalArgumentException("Product count cannot be negative");
+        }
+        return categoryRepository.findCategoriesWithLessThanProducts(count);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Category> searchCategories(String keyword) {
+        if (!StringUtils.hasText(keyword)) {
+            throw new IllegalArgumentException("Search keyword cannot be empty");
+        }
+        return categoryRepository.searchCategories(keyword);
+    }
+
     private void validateCategory(Category category) {
         if (category == null) {
             throw new IllegalArgumentException("Category cannot be null");
@@ -107,8 +166,11 @@ public class CategoryService {
         if (!StringUtils.hasText(category.getName())) {
             throw new IllegalArgumentException("Category name cannot be empty");
         }
-        if (category.getName().length() > 100) {
-            throw new IllegalArgumentException("Category name cannot be longer than 100 characters");
+        if (category.getName().length() > MAX_NAME_LENGTH) {
+            throw new IllegalArgumentException("Category name cannot be longer than " + MAX_NAME_LENGTH + " characters");
+        }
+        if (category.getDescription() != null && category.getDescription().length() > MAX_DESCRIPTION_LENGTH) {
+            throw new IllegalArgumentException("Category description cannot be longer than " + MAX_DESCRIPTION_LENGTH + " characters");
         }
     }
 }
