@@ -16,30 +16,30 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Get()
-  getAll(): Product[] {
+  async getAll(): Promise<Product[]> {
     return this.productService.findAll();
   }
 
   @Get(':id')
-  getOne(@Param('id', ParseIntPipe) id: number): Product {
+  async getOne(@Param('id', ParseIntPipe) id: number): Promise<Product> {
     return this.productService.findOne(id);
   }
 
   @Post()
-  create(@Body() body: Omit<Product, 'id'>): Product {
+  async create(@Body() body: Omit<Product, 'id'>): Promise<Product> {
     return this.productService.create(body);
   }
 
   @Put(':id')
-  update(
+  async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() body: Partial<Product>,
-  ): Product {
+  ): Promise<Product> {
     return this.productService.update(id, body);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number): void {
+  async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.productService.remove(id);
   }
 }
