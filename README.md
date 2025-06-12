@@ -312,4 +312,3 @@ pnpm test:cov
 
 - NestJS team for the amazing framework
 - TypeORM team for the powerful ORM
-- All contributors who have helped shape this project
