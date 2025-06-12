@@ -1,26 +1,29 @@
 # StockSage
 
-StockSage is a comprehensive Inventory Management System built with Spring MVC, Hibernate, and MySQL. The system provides a complete solution for managing inventory, tracking stock levels, and handling product and category information through a modern RESTful API.
+StockSage is a comprehensive Inventory Management System being built with NestJS and TypeScript. The system aims to provide a complete solution for managing inventory, tracking stock levels, and handling product information through a modern RESTful API.
 
 ## 🚀 Features
 
+### Currently Implemented
 - **Product Management**
-
   - Complete CRUD operations
+  - Basic product information tracking
+  - RESTful API endpoints
+
+### In Progress
+- **Product Management**
   - SKU-based tracking
   - Price and quantity management
   - Category association
   - Stock level monitoring
 
 - **Category Management**
-
   - Hierarchical organization
   - Product grouping
   - Category-based reporting
   - Empty category detection
 
 - **Inventory Control**
-
   - Real-time stock tracking
   - Low stock alerts
   - Stock level history
@@ -34,101 +37,82 @@ StockSage is a comprehensive Inventory Management System built with Spring MVC, 
 
 ## 🛠️ Technology Stack
 
-- **Backend Framework:** Spring MVC 5.3.x
-- **ORM:** Hibernate 5.6.x
-- **Database:** MySQL 8.0+
-- **Build Tool:** Maven
-- **Java Version:** 1.8+
+- **Backend Framework:** NestJS
+- **Language:** TypeScript
+- **Database:** (To be implemented)
+- **Build Tool:** pnpm
 - **Key Libraries:**
-  - Spring Data JPA
-  - Jackson (JSON)
-  - Lombok
-  - Logback
+  - NestJS Core
+  - TypeScript
+  - Class Validator
+  - Class Transformer
 
 ## 📋 Prerequisites
 
-- JDK 1.8 or higher
-- Maven 3.x
-- MySQL 8.0+
-- Tomcat 9.x
+- Node.js 16.x or higher
+- pnpm
+- (Database requirements to be added)
 
 ## 🔧 Setup & Installation
 
-1. **Database Setup:**
-
+1. **Install Dependencies:**
    ```bash
-   # Create MySQL database
-   CREATE DATABASE stocksage;
+   cd backend
+   pnpm install
    ```
 
-2. **Configuration:**
-
-   - Update `src/main/resources/application.properties` with your database credentials
-   - Configure logging in `logback.xml` if needed
-
-3. **Build & Deploy:**
-
+2. **Run the Application:**
    ```bash
-   # Build the project
-   mvn clean install
-
-   # Deploy to Tomcat
-   # Copy target/inventory-management.war to Tomcat's webapps directory
+   pnpm start:dev
    ```
 
-4. **Access:**
-   - Web Interface: http://localhost:8080/inventory-management/
-   - API Base URL: http://localhost:8080/inventory-management/api/
+3. **Access:**
+   - API Base URL: http://localhost:3000/
 
 ## 📁 Project Structure
 
 ```
-src/main/
-├── java/com/inventory/
-│   ├── config/         # Spring configuration
-│   ├── controller/     # REST controllers
-│   ├── model/         # JPA entities
-│   ├── repository/    # Data repositories
-│   └── service/       # Business logic
-└── webapp/            # Web resources
+backend/
+├── src/
+│   ├── product/          # Product module
+│   │   ├── product.controller.ts
+│   │   ├── product.service.ts
+│   │   ├── product.module.ts
+│   │   └── product.entity.ts
+│   ├── app.module.ts     # Root module
+│   └── main.ts          # Application entry point
 ```
 
 ## 🔑 API Endpoints
 
-### Products
+### Products (Implemented)
 
-- `GET /api/products` - List all products
-- `POST /api/products` - Create new product
-- `GET /api/products/{id}` - Get product details
-- `PUT /api/products/{id}` - Update product
-- `DELETE /api/products/{id}` - Delete product
-- `GET /api/products/search` - Search products
-- `GET /api/products/low-stock` - Get low stock products
+- `GET /products` - List all products
+- `POST /products` - Create new product
+- `GET /products/:id` - Get product details
+- `PUT /products/:id` - Update product
+- `DELETE /products/:id` - Delete product
 
-### Categories
+### Categories (Planned)
 
-- `GET /api/categories` - List all categories
-- `POST /api/categories` - Create new category
-- `GET /api/categories/{id}` - Get category details
-- `PUT /api/categories/{id}` - Update category
-- `DELETE /api/categories/{id}` - Delete category
-- `GET /api/categories/empty` - List empty categories
+- `GET /categories` - List all categories
+- `POST /categories` - Create new category
+- `GET /categories/:id` - Get category details
+- `PUT /categories/:id` - Update category
+- `DELETE /categories/:id` - Delete category
+- `GET /categories/empty` - List empty categories
 
-## 📊 Logging & Monitoring
+## 🚧 Project Status
 
-- Comprehensive logging with Logback
-- Audit trail for inventory changes
-- Performance monitoring
-- Error tracking and reporting
+This is an ongoing project. Currently, we have implemented the basic product management functionality with CRUD operations. The following features are planned for implementation:
 
-## 🔒 Security Features
+1. Database integration
+2. Category management
+3. Inventory tracking
+4. Search and filtering capabilities
+5. Authentication and authorization
+6. Input validation and error handling
+7. Testing suite
 
-- Input validation and sanitization
-- SQL injection prevention
-- XSS protection
-- CSRF protection
-- Secure database operations
 
----
-
-**StockSage – Your Complete Inventory Solution**
+**StockSage – Your Complete Inventory Solution (Under Development)**
