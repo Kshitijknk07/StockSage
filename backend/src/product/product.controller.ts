@@ -7,17 +7,40 @@ import {
   Put,
   Delete,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { Product } from './product.entity';
+import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
+import { SearchProductsDto } from './dto/search-products.dto';
+import { LowStockDto } from './dto/low-stock.dto';
+import { StockHistory } from './stock-history.entity';
 
 @Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Get()
-  async getAll(): Promise<Product[]> {
-    return this.productService.findAll();
+  async getAll(@Query() searchDto: SearchProductsDto) {
+    return this.productService.findAll(searchDto);
+  }
+
+  @Get('search')
+  async search(@Query() searchDto: SearchProductsDto) {
+    return this.productService.findAll(searchDto);
+  }
+
+  @Get('low-stock')
+  async getLowStock(@Query() lowStockDto: LowStockDto) {
+    return this.productService.findLowStock(lowStockDto);
+  }
+
+  @Get(':id/stock-history')
+  async getStockHistory(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<StockHistory[]> {
+    return this.productService.getStockHistory(id);
   }
 
   @Get(':id')
@@ -26,16 +49,16 @@ export class ProductController {
   }
 
   @Post()
-  async create(@Body() body: Omit<Product, 'id'>): Promise<Product> {
-    return this.productService.create(body);
+  async create(@Body() createProductDto: CreateProductDto): Promise<Product> {
+    return this.productService.create(createProductDto);
   }
 
   @Put(':id')
   async update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() body: Partial<Product>,
+    @Body() updateProductDto: UpdateProductDto,
   ): Promise<Product> {
-    return this.productService.update(id, body);
+    return this.productService.update(id, updateProductDto);
   }
 
   @Delete(':id')

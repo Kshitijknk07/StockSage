@@ -1,98 +1,315 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# StockSage Backend API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+StockSage is a robust inventory management system built with NestJS, TypeORM, and MySQL. This backend API provides comprehensive features for managing products, categories, and stock levels with detailed tracking and reporting capabilities.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🚀 Features
 
-## Description
+### 1. Product Management
+- Create, read, update, and delete products
+- Link products with categories
+- Track product details (name, SKU, price, quantity)
+- Automatic stock history tracking
+- Low stock alerts
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### 2. Category Management
+- Create, read, update, and delete categories
+- Track empty categories
+- Associate products with categories
 
-## Project setup
+### 3. Advanced Search & Filtering
+- Search products by name or SKU
+- Filter products by category
+- Pagination support
+- Sort results
 
-```bash
-$ pnpm install
+### 4. Stock Management
+- Real-time stock level tracking
+- Stock history with audit trail
+- Low stock alerts with configurable thresholds
+- Automatic stock change logging
+
+### 5. Error Handling
+- Consistent error response format
+- Detailed error messages
+- Resource not found handling
+- Validation error handling
+
+## 🛠️ Technology Stack
+
+- **Framework**: NestJS
+- **Database**: MySQL
+- **ORM**: TypeORM
+- **Validation**: class-validator, class-transformer
+- **Package Manager**: pnpm
+- **Configuration**: @nestjs/config
+
+## 📋 Prerequisites
+
+- Node.js (v16 or higher)
+- MySQL (v8.0 or higher)
+- pnpm (v7 or higher)
+
+## 🚀 Getting Started
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/StockSage.git
+   cd StockSage/backend
+   ```
+
+2. **Install dependencies**
+   ```bash
+   pnpm install
+   ```
+
+3. **Set up environment variables**
+   Create a `.env` file in the root directory with the following variables:
+   ```env
+   # Server Configuration
+   PORT=3000
+   NODE_ENV=development
+
+   # Database Configuration
+   DB_HOST=localhost
+   DB_PORT=3306
+   DB_USERNAME=your_db_username
+   DB_PASSWORD=your_db_password
+   DB_DATABASE=your_db_name
+   ```
+
+   > ⚠️ **Important**: Never commit the `.env` file to version control. The `.env.example` file is provided as a template.
+
+4. **Set up the database**
+   ```sql
+   CREATE DATABASE your_db_name;
+   CREATE USER 'your_db_username'@'localhost' IDENTIFIED BY 'your_db_password';
+   GRANT ALL PRIVILEGES ON your_db_name.* TO 'your_db_username'@'localhost';
+   FLUSH PRIVILEGES;
+   ```
+
+5. **Start the development server**
+   ```bash
+   pnpm start:dev
+   ```
+
+## 📚 API Documentation
+
+### Products
+
+#### Get All Products
+```http
+GET /products
+```
+Query Parameters:
+- `query`: Search term for name/SKU
+- `categoryId`: Filter by category
+- `page`: Page number (default: 1)
+- `limit`: Items per page (default: 10)
+
+#### Get Product by ID
+```http
+GET /products/:id
 ```
 
-## Compile and run the project
-
-```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+#### Create Product
+```http
+POST /products
+```
+Request Body:
+```json
+{
+  "name": "Product Name",
+  "sku": "SKU123",
+  "price": 99.99,
+  "quantity": 10,
+  "categoryId": 1
+}
 ```
 
-## Run tests
+#### Update Product
+```http
+PUT /products/:id
+```
+Request Body:
+```json
+{
+  "name": "Updated Name",
+  "price": 89.99,
+  "quantity": 5,
+  "categoryId": 2
+}
+```
 
+#### Delete Product
+```http
+DELETE /products/:id
+```
+
+#### Get Low Stock Products
+```http
+GET /products/low-stock
+```
+Query Parameters:
+- `threshold`: Minimum stock level (default: 5)
+
+#### Get Product Stock History
+```http
+GET /products/:id/stock-history
+```
+
+### Categories
+
+#### Get All Categories
+```http
+GET /categories
+```
+
+#### Get Category by ID
+```http
+GET /categories/:id
+```
+
+#### Create Category
+```http
+POST /categories
+```
+Request Body:
+```json
+{
+  "name": "Category Name",
+  "description": "Category Description"
+}
+```
+
+#### Update Category
+```http
+PUT /categories/:id
+```
+Request Body:
+```json
+{
+  "name": "Updated Name",
+  "description": "Updated Description"
+}
+```
+
+#### Delete Category
+```http
+DELETE /categories/:id
+```
+
+#### Get Empty Categories
+```http
+GET /categories/empty
+```
+
+## 🔍 Error Handling
+
+The API uses a consistent error response format:
+
+```json
+{
+  "statusCode": 404,
+  "message": "Product with ID 123 not found",
+  "error": "Not Found",
+  "resource": "Product",
+  "resourceId": 123,
+  "timestamp": "2024-03-14T12:00:00.000Z",
+  "path": "/products/123"
+}
+```
+
+Common HTTP Status Codes:
+- `200`: Success
+- `201`: Created
+- `400`: Bad Request
+- `404`: Not Found
+- `500`: Internal Server Error
+
+## 📊 Database Schema
+
+### Product
+```sql
+CREATE TABLE product (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  sku VARCHAR(255) NOT NULL UNIQUE,
+  price DECIMAL(10,2) NOT NULL,
+  quantity INT NOT NULL,
+  category_id INT,
+  FOREIGN KEY (category_id) REFERENCES category(id)
+);
+```
+
+### Category
+```sql
+CREATE TABLE category (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  description TEXT
+);
+```
+
+### Stock History
+```sql
+CREATE TABLE stock_history (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  product_id INT NOT NULL,
+  previous_quantity INT NOT NULL,
+  new_quantity INT NOT NULL,
+  quantity_change INT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE
+);
+```
+
+## 🔐 Security
+
+- Input validation using class-validator
+- SQL injection prevention through TypeORM
+- Error message sanitization in production
+- Environment variable protection
+- Secure database credentials management
+
+## 🧪 Testing
+
+Run the test suite:
 ```bash
-# unit tests
-$ pnpm run test
+# Unit tests
+pnpm test
 
 # e2e tests
-$ pnpm run test:e2e
+pnpm test:e2e
 
-# test coverage
-$ pnpm run test:cov
+# Test coverage
+pnpm test:cov
 ```
 
-## Deployment
+## 📦 Production Deployment
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+1. Set up production environment variables:
+   ```env
+   NODE_ENV=production
+   PORT=3000
+   DB_HOST=your_production_host
+   DB_PORT=3306
+   DB_USERNAME=your_production_username
+   DB_PASSWORD=your_production_password
+   DB_DATABASE=your_production_database
+   ```
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+2. Build the application:
+   ```bash
+   pnpm build
+   ```
 
-```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
-```
+3. Start the production server:
+   ```bash
+   pnpm start:prod
+   ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## 🙏 Acknowledgments
 
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+- NestJS team for the amazing framework
+- TypeORM team for the powerful ORM
+- All contributors who have helped shape this project

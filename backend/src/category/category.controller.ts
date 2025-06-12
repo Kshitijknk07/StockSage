@@ -6,6 +6,7 @@ import {
   Param,
   Put,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { Category } from './category.entity';
@@ -14,28 +15,36 @@ import { Category } from './category.entity';
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
-  @Post()
-  create(@Body() category: Partial<Category>) {
-    return this.categoryService.create(category);
-  }
-
   @Get()
-  findAll() {
+  async getAll(): Promise<Category[]> {
     return this.categoryService.findAll();
   }
 
+  @Get('empty')
+  async getEmpty(): Promise<Category[]> {
+    return this.categoryService.findEmpty();
+  }
+
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.categoryService.findOne(Number(id));
+  async getOne(@Param('id', ParseIntPipe) id: number): Promise<Category> {
+    return this.categoryService.findOne(id);
+  }
+
+  @Post()
+  async create(@Body() category: Omit<Category, 'id'>): Promise<Category> {
+    return this.categoryService.create(category);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() category: Partial<Category>) {
-    return this.categoryService.update(Number(id), category);
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() category: Partial<Category>,
+  ): Promise<Category> {
+    return this.categoryService.update(id, category);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.categoryService.remove(Number(id));
+  async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    return this.categoryService.remove(id);
   }
 }
